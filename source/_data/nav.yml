@@ -45,10 +45,10 @@
                     link: /introduction/authenticity_verification
                     text: 验证
                     name: authenticity_verification
-                  -
-                    link: /introduction/authenticity_charge
-                    text: 收费（小程序优惠通道）
-                    name: authenticity_charge
+                  # -
+                  #   link: /introduction/authenticity_charge
+                  #   text: 收费（小程序优惠通道）
+                  #   name: authenticity_charge
         -
             link: /introduction/register_consummate
             text: 创建小程序
@@ -163,7 +163,7 @@
                     name: auditinginfo_examine
                   -
                     link: /introduction/auditinginfo_vertical
-                    text: 分垂类物料提交规范
+                    text: 分垂类素材提交规范
                     name: auditinginfo_vertical
               -
                 link: /introduction/auditing_faq
@@ -198,6 +198,10 @@
                     link: /introduction/rank_h5
                     text: 关联H5站点
                     name: rank_h5
+                  -
+                    link: /introduction/rank_single
+                    text: 单卡配置说明
+                    name: rank_single
                   -
                     link: /introduction/rank_setimage
                     text: 搜索结果出图配置
@@ -321,12 +325,21 @@
       sidebar:
         -
             link: /introduction/productlaboratory
-            text: Discuz 论坛解决方案
+            text: Discuz! 论坛解决方案
             sidebar:
               -
                 link: /introduction/productlaboratory
-                text: 开通指引
+                text: 论坛小程序开通指引
                 name: productlaboratory
+              -
+                link: /introduction/productlaboratory_ad
+                text: 广告组件接入指引
+                name: productlaboratory_ad
+              -
+                link: /introduction/productlaboratory_faq
+                text: 论坛小程序开通FAQ 
+                name: productlaboratory_faq                
+
 
 # 2
 -
@@ -760,6 +773,10 @@
                 link: /develop/framework/custom-component_behaviors
                 text: behaviors
                 name: custom-component_behaviors
+              -
+                link: /develop/framework/custom-component_observers
+                text: 数据监听器
+                name: custom-component_observers
               -
                 link: /develop/framework/custom-component_generic
                 text: 抽象节点
@@ -3108,103 +3125,99 @@
                 sidebar:
 
                   -
-                    link: /develop/serverapi/open_feed/#信息流物料提交简介
+                    link: /develop/serverapi/open_feed 
                     text: 信息流物料提交简介
                     name: open_feed_信息流物料提交简介
                   -
-                    link: /develop/serverapi/open_feed/#submitresource
+                    link: /develop/serverapi/submitresource
                     text: submitresource
-                    name: open_feed_submitresource
+                    name:  submitresource
                   -
-                    link: /develop/serverapi/open_feed/#deleteresource
+                    link: /develop/serverapi/deleteresource
                     text: deleteresource
-                    name: open_feed_deleteresource
+                    name:  deleteresource
                   -
-                    link: /develop/serverapi/open_feed/#submitsitemap
+                    link: /develop/serverapi/submitsitemap
                     text: submitsitemap
-                    name: open_feed_submitsitemap
+                    name:  submitsitemap
                   -
-                    link: /develop/serverapi/open_feed/#deletesitemap
+                    link: /develop/serverapi/deletesitemap
                     text: deletesitemap
-                    name: open_feed_deletesitemap
+                    name: deletesitemap
                   -
-                    link: /develop/serverapi/open_feed/#信息流物料投放具体字段
+                    link: /develop/serverapi/type
                     text: 信息流物料投放具体字段
-                    name: open_feed_信息流物料投放具体字段
+                    name: type
                   -
-                    link: /develop/serverapi/open_feed/#信息流字段附录
+                    link: /develop/serverapi/appendix
                     text: 信息流字段附录
-                    name: open_feed_信息流字段附录
+                    name: appendix
                   -
-                    link: /develop/serverapi/open_feed/#常见问题
+                    link: /develop/serverapi/faq
                     text: 常见问题
-                    name: open_feed_常见问题
+                    name: faq
               -
                 link: /develop/serverapi/open_infomation
-                text: 模板消息
+                text: 消息模板
                 name: open_infomation
                 sidebar:
                   -
-                    link: /develop/serverapi/open_infomation/#使用场景
-                    text: 使用场景
-                    name: open_infomation_使用场景
+                    link: /develop/serverapi/open_infomation 
+                    text: 消息模板介绍
+                    name: open_infomation 
                   -
-                    link: /develop/serverapi/open_infomation/#功能介绍
-                    text: 功能介绍
-                    name: open_infomation_功能介绍
-                  -
-                    link: /develop/serverapi/open_infomation/#使用说明
+                    link: /develop/serverapi/useintroduction
                     text: 使用说明
-                    name: open_infomation_使用说明
+                    name: useintroduction
                   -
-                    link: /develop/serverapi/open_infomation/#下发条件说明
+                    link: /develop/serverapi/sendintroduction
                     text: 下发条件说明
-                    name: open_infomation_下发条件说明
+                    name: sendintroduction
                   -
-                    link: /develop/serverapi/open_infomation/#getTemplateLibraryList
+                    link: /develop/serverapi/getTemplateLibraryList
                     text: getTemplateLibraryList
-                    name: open_infomation_getTemplateLibraryList
+                    name: getTemplateLibraryList
                   -
-                    link: /develop/serverapi/open_infomation/#getTemplateLibraryById
+                    link: /develop/serverapi/getTemplateLibraryById
                     text: getTemplateLibraryById
-                    name: open_infomation_getTemplateLibraryById
+                    name: getTemplateLibraryById
                   -
-                    link: /develop/serverapi/open_infomation/#addTemplate
+                    link: /develop/serverapi/addTemplate
                     text: addTemplate
-                    name: open_infomation_addTemplate
+                    name: addTemplate
                   -
-                    link: /develop/serverapi/open_infomation/#getTemplateList
+                    link: /develop/serverapi/getTemplateList
                     text: getTemplateList
-                    name: open_infomation_getTemplateList
+                    name: getTemplateList
                   -
-                    link: /develop/serverapi/open_infomation/#deleteTemplate
+                    link: /develop/serverapi/deleteTemplate
                     text: deleteTemplate
-                    name: open_infomation_deleteTemplate
+                    name: deleteTemplate
                   -
-                    link: /develop/serverapi/open_infomation/#sendTemplateMessage
+                    link: /develop/serverapi/sendTemplateMessage
                     text: sendTemplateMessage
-                    name: open_infomation_sendTemplateMessage
+                    name: sendTemplateMessage
               -
                 link: /develop/serverapi/contact_api
                 text: 客服消息
                 name: contact_api
                 sidebar:
                   -
-                    link: /develop/serverapi/contact_api/#消息推送介绍
+                    link: /develop/serverapi/contact_api 
                     text: 消息推送介绍
-                    name: contact_api_消息推送介绍
+                    name: contact_api 
                   -
-                    link: /develop/serverapi/contact_api/#在页面中使用客服消息
+                    link: /develop/serverapi/contact_api_page
                     text: 在页面中使用客服消息
-                    name: contact_api_在页面中使用客服消息
+                    name: contact_api_page
                   -
-                    link: /develop/serverapi/contact_api/#后台接入消息服务
+                    link: /develop/serverapi/contact_api_background
                     text: 后台接入消息服务
-                    name: contact_api_后台接入消息服务
+                    name: contact_api_background
                   -
-                    link: /develop/serverapi/contact_api/#发送客服消息接口
+                    link: /develop/serverapi/contact_api_send
                     text: 发送客服消息接口
-                    name: contact_api_发送客服消息接口
+                    name: contact_api_send
               -
                 link: /develop/serverapi/power_exp
                 text: 开发者服务权限说明
@@ -3215,19 +3228,11 @@
                 name: open_risk_power
                 sidebar:
                   -
-                    link: /develop/serverapi/open_risk_power/#使用场景
-                    text: 使用场景
-                    name: open_risk_power_使用场景
-                  -
-                    link: /develop/serverapi/open_risk_power/#功能介绍
+                    link: /develop/serverapi/open_risk_power 
                     text: 功能介绍
-                    name: open_risk_power_功能介绍
+                    name: open_risk_power 
                   -
-                    link: /develop/serverapi/open_risk_power/#使用说明
-                    text: 使用说明
-                    name: open_risk_power_使用说明
-                  -
-                    link: /develop/serverapi/open_risk_power/#detectrisk
+                    link: /develop/serverapi/open_risk_power_detectrisk
                     text: detectrisk
                     name: open_risk_power_detectrisk
     -
@@ -3316,6 +3321,10 @@
                     link: /develop/devtools/editor/#自动补全
                     text: 自动补全
                     name: editor_自动补全
+                  -
+                    link: /develop/devtools/editor/#转换px为rpx
+                    text: 转换px为rpx
+                    name: editor_转换px为rpx              
                   -
                     link: /develop/devtools/editor/#Git-状态展示
                     text: Git 状态展示
@@ -3603,13 +3612,11 @@
                   name: cloud_database
                   
                   sidebar:
-                    # database
-                    # -
-                    #     text: database
-                    #     name: cloud_database
-                    #     link: /develop/cloud/cloud_database 
-                    
-                    # collection
+                    -
+                        text: database
+                        name: cloud_database_database
+                        link: /develop/cloud/cloud_database/database
+
                     -
                         text: collection
                         name: cloud_database_collection
@@ -3773,9 +3780,34 @@
              
               sidebar: 
                 -
-                  text: cloud.database
-                  name: cloud_server_sdk_database_cloud.database
-                  link: /develop/cloud/server_sdk/database 
+                  text: Database
+                  name: database
+                  link: /develop/cloud/server_sdk/database
+                  sidebar:
+                    -
+                      text: Database.collection
+                      name: database_Database.collection
+                      link: /develop/cloud/server_sdk/database/#Database-collection
+                    -
+                      text: Database.command
+                      name: database_Database.command
+                      link: /develop/cloud/server_sdk/database/#Database-command
+                    -
+                      text: Database.createCollection
+                      name: database_Database.createCollection
+                      link: /develop/cloud/server_sdk/database/#Database-createCollection
+                    -
+                      text: Database.Geo
+                      name: database_Database.Geo
+                      link: /develop/cloud/server_sdk/database/#Database-Geo
+                    -
+                      text: Database.serverDate
+                      name: database_Database.serverDate
+                      link: /develop/cloud/server_sdk/database/#Database-serverDate
+                    -
+                      text: Database.RegExp
+                      name: database_Database.RegExp
+                      link: /develop/cloud/server_sdk/database/#Database-RegExp
                 -
                   text: Collection 
                   name: collection  
@@ -3825,46 +3857,67 @@
                       text: Collection.where
                       name: collection_Collection.where
                       link: /develop/cloud/server_sdk/collection/#Collection-where
+                # -
+                #   text: Database.collection
+                #   name: cloud_server_sdk_database_Database.collection
+                #   link: /develop/cloud/server_sdk/database/#Database-collection
+                # -
+                #   text: Database.command
+                #   name: cloud_server_sdk_database_Database.command
+                #   link: /develop/cloud/server_sdk/database/#Database-command
+                # -
+                #   text: Database.createCollection
+                #   name: cloud_server_sdk_database_Database.createCollection
+                #   link: /develop/cloud/server_sdk/database/#Database-createCollection
+                # -
+                #   text: Database.Geo
+                #   name: cloud_server_sdk_database_Database.Geo
+                #   link: /develop/cloud/server_sdk/database/#Database-Geo
+                # -
+                #   text: Database.serverDate
+                #   name: cloud_server_sdk_database_Database.serverDate
+                #   link: /develop/cloud/server_sdk/database/#Database-serverDate
+                # -
+                #   text: Database.RegExp
+                #   name: cloud_server_sdk_database_Database.RegExp
+                #   link: /develop/cloud/server_sdk/database/#Database-RegExp
+                # -
+                #   text: Document.get
+                #   name: cloud_server_sdk_database_Document.get
+                #   link: /develop/cloud/server_sdk/database/#Document-get
+                # -
+                #   text: Document.remove
+                #   name: cloud_server_sdk_database_Document.remove
+                #   link: /develop/cloud/server_sdk/database/#Document-remove
+                # -
+                #   text: Document.set
+                #   name: cloud_server_sdk_database_Document.set
+                #   link: /develop/cloud/server_sdk/database/#Document-set
+                # -
+                #   text: Document.update
+                #   name: cloud_server_sdk_database_Document.update
+                #   link: /develop/cloud/server_sdk/database/#Document-update
                 -
-                  text: Database.collection
-                  name: cloud_server_sdk_database_Database.collection
-                  link: /develop/cloud/server_sdk/database/#Database-collection
-                -
-                  text: Database.command
-                  name: cloud_server_sdk_database_Database.command
-                  link: /develop/cloud/server_sdk/database/#Database-command
-                -
-                  text: Database.createCollection
-                  name: cloud_server_sdk_database_Database.createCollection
-                  link: /develop/cloud/server_sdk/database/#Database-createCollection
-                -
-                  text: Database.Geo
-                  name: cloud_server_sdk_database_Database.Geo
-                  link: /develop/cloud/server_sdk/database/#Database-Geo
-                -
-                  text: Database.serverDate
-                  name: cloud_server_sdk_database_Database.serverDate
-                  link: /develop/cloud/server_sdk/database/#Database-serverDate
-                -
-                  text: Database.RegExp
-                  name: cloud_server_sdk_database_Database.RegExp
-                  link: /develop/cloud/server_sdk/database/#Database-RegExp
-                -
-                  text: Document.get
-                  name: cloud_server_sdk_database_Document.get
-                  link: /develop/cloud/server_sdk/database/#Document-get
-                -
-                  text: Document.remove
-                  name: cloud_server_sdk_database_Document.remove
-                  link: /develop/cloud/server_sdk/database/#Document-remove
-                -
-                  text: Document.set
-                  name: cloud_server_sdk_database_Document.set
-                  link: /develop/cloud/server_sdk/database/#Document-set
-                -
-                  text: Document.update
-                  name: cloud_server_sdk_database_Document.update
-                  link: /develop/cloud/server_sdk/database/#Document-update
+                  text: Document 
+                  name: document
+                  link: /develop/cloud/server_sdk/document
+                  sidebar:
+                    -
+                      text: Document.get
+                      name: cloud_server_sdk_database_Document.get
+                      link: /develop/cloud/server_sdk/document/#Document-get
+                    -
+                      text: Document.remove
+                      name: cloud_server_sdk_database_Document.remove
+                      link: /develop/cloud/server_sdk/document/#Document-remove
+                    -
+                      text: Document.set
+                      name: cloud_server_sdk_database_Document.set
+                      link: /develop/cloud/server_sdk/document/#Document-set
+                    -
+                      text: Document.update
+                      name: cloud_server_sdk_database_Document.update
+                      link: /develop/cloud/server_sdk/document/#Document-update
             -
               text: 云存储
               name: cloud_server_sdk_storage
@@ -3880,8 +3933,8 @@
                   link: /develop/cloud/server_sdk/storage/#cloud-downloadFile
                 -
                   text: cloud.getTempFileURL
-                  name: cloud_server_sdk_storage_loud.getTempFileURL
-                  link: /develop/cloud/server_sdk/storage/#loud-getTempFileURL
+                  name: cloud_server_sdk_storage_cloud.getTempFileURL
+                  link: /develop/cloud/server_sdk/storage/#cloud-getTempFileURL
                 -
                   text: cloud.deleteFile
                   name: cloud_server_sdk_storage_cloud.deleteFile
@@ -3889,7 +3942,7 @@
             -
               text: 云函数
               name: cloud_server_sdk_function
-              
+              link: /develop/cloud/server_sdk/function
               sidebar: 
                 -
                   text: cloud.callFunction
@@ -4265,6 +4318,10 @@
             link: /data/custom
             text: 自定义事件分析
             name: custom
+          -
+            link: /data/visualization
+            text: 可视化圈选
+            name: visualization      
           -
             link: /data/target_user
             text: 指标说明

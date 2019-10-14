@@ -2,7 +2,6 @@
 !function(pathname){
     var urlMap = {
         '/docs/design/principle/':'/docs/design/overview/introduction/',
-        '/docs/develop/component/media_live-player/':'/docs/develop/component/media/',
         '/docs/design/component/nav/':'/docs/design/component/topnav/',
         '/docs/develop/server/upstream/':'/docs/develop/web/detail/',
         '/docs/develop/api/open_feed/':'/docs/develop/api/open_feed/#submitresource/',
@@ -320,7 +319,18 @@
                 e.preventDefault();
                 var href = $(this).attr('href');
                 updateArticle($(this), href);
-            })
+            });
+
+            // 回到顶部
+            $('.m-doc-content-layout').on('scroll', debounce(function () {
+                var backTop = $('.m-doc-menu-top');
+                if (ctx.screenHeight > $(this).scrollTop()) {
+                    backTop.removeClass('m-doc-menu-top-show');
+                } else {
+                    backTop.addClass('m-doc-menu-top-show');
+                }
+            }));
+            
             // 点击右侧sidebar，禁止默认跳转，改为滑动到指定的元素位置
             $('.toc-wrap li a').on('click', ctx._scrollToAnchor);
             if (this.screenWidth > 768) {
@@ -401,7 +411,7 @@
             $.ajax({
                 url: href,
                 dataType: 'html',
-                success: function (res) {
+                success: res => {
                     var $html = $($.parseHTML(res));
                     var article = $html.find('#article-main-content').html();
                     var docMenu = $html.find('#m-doc-menu-wrapper').html();

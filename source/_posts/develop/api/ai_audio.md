@@ -30,7 +30,7 @@ sidebar: ai_audio
 
 |参数 | 类型 | 说明  |
 |---- | ---- | ---- |
-|filePath | String | 合成的音频文件的路径。|
+|filePath | String | 合成的音频文件的路径，此路径为临时路径且在当次回调中有效|
 
 
 **示例**：
@@ -53,10 +53,10 @@ Page({
     textToAudio() {
         swan.ai.textToAudio({
             tex: '这是一段测试文字',
-            success(res) {
+            success: res => {
                 console.log('ai.textToAudio success', res);
             },
-            fail(err) {
+            fail: err => {
                 console.log('ai.textToAudio fail', err);
             }
         });
