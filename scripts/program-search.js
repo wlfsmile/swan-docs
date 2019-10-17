@@ -1,28 +1,20 @@
 /**
- * @file Generate search JSON
+ * @file Generate programsearch JSON 生成小程序专用的搜索json文件
  * @author Zhang Wenli <zhangwenli01@baidu.com>
  */
 
 const fs = require('fs');
 
 /* global hexo */
-hexo.extend.generator.register('search', function (locals) {
+hexo.extend.generator.register('programSearch', function (locals) {
     const config = this.config;
     const searchConfig = config.search;
     let searchfield = searchConfig.field;
 
     let posts;
     let pages;
-    let navs = locals.data.nav;
     // 递归生成搜索结果面包屑
     let resBreadCrumbs = [];
-
-    // 将侧边栏数据加入搜索结果
-    navs.forEach(function (nav) {
-        nav.nav.forEach(function (nav) {
-            generateNavItem(nav);
-        });
-    });
 
     if (searchfield.trim() !== '') {
         searchfield = searchfield.trim();
@@ -58,8 +50,14 @@ hexo.extend.generator.register('search', function (locals) {
                 if (post.path) {
                     tmpPost.url = config.root + post.path;
                 }
+                if(post.nav) {
+                    tmpPost.boardName = post.nav;
+                }
+                if(post.header) {
+                    tmpPost.tagName = post.header;
+                }
                 if (post._content) {
-                    tmpPost.content = includeMarkdown(post._content);
+                    tmpPost.content = (tmpPost.url.indexOf('/docs/game/') === -1)&&post.more ? replaceHtml(post.more) : includeMarkdown(post._content);
                 }
                 if (post.categoryName) {
                     tmpPost.categoryName = post.categoryName;
@@ -88,30 +86,6 @@ hexo.extend.generator.register('search', function (locals) {
             });
         }
     });
-
-    function generateNavItem(navItem) {
-        if (navItem.sidebar) {
-            generateNav(navItem.sidebar, [navItem.text + ',' + navItem.link], 0);
-        }
-        else {
-            navItem.breadCrumbs = [navItem.text + ',' + navItem.link];
-            resBreadCrumbs.push(navItem);
-        }
-    }
-    function generateNav(nav, breadCrumbs, index) {
-        index++;
-        nav.forEach(function (na) {
-            if (na.sidebar) {
-                const temp = breadCrumbs.slice(0, index);
-                temp.push(na.text + ',' + na.link);
-                generateNav(na.sidebar, temp, index);
-            }
-            else {
-                na.breadCrumbs = breadCrumbs.slice(0);
-                resBreadCrumbs.push(na);
-            }
-        });
-    }
     resBreadCrumbs = resBreadCrumbs.map(function (item) {
         item.breadCrumbs = item.breadCrumbs.filter(function (item) {
             return item !== 'undefined,undefined';
@@ -124,10 +98,9 @@ hexo.extend.generator.register('search', function (locals) {
             isNav: true
         };
     });
-    const json = JSON.stringify([...resBreadCrumbs, ...res]);
-
+    const json = JSON.stringify([resBreadCrumbs, ...res]);
     return {
-        path: searchConfig.path,
+        path: 'programSearch.json',
         data: json
     };
 });
@@ -152,4 +125,15 @@ function includeMarkdown(content) {
         match = regExp.exec(content);
     }
     return content;
+}
+
+//去除所有html标签 转为纯文本
+function replaceHtml(str) {
+    str = str.replace(/(\r\n|\n)/g, '')               // 换行
+    .replace(/\s/g, '')                              // 空格
+    .replace(/<!--.*?\/-->/g, '')                   // 注释
+    .replace(/<pre.*?\/pre>/g, '')                 // 去掉代码片段
+    .replace(/<[^>]+>/g, '');                     // html标签
+
+    return str;
 }
