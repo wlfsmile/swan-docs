@@ -54,11 +54,13 @@ hexo.extend.generator.register('programSearch', function (locals) {
                 if (post._content) {
                     tmpPost.content = post.more ? replaceHtml(post.more) : includeMarkdown(post._content);
                 }
+                // 标记为tagName，用于搜索展示
                 if (post.nav) {
                     tmpPost.tagName = TAG_MAP[post.nav] || '';
                 } else {
                     tmpPost.tagName = '';
                 }
+                // 标记为boardName，用于搜索展示
                 if (post.header) {
                     tmpPost.boardName = BOARD_MAP[post.header] || '';
                 } else {
@@ -86,6 +88,7 @@ hexo.extend.generator.register('programSearch', function (locals) {
                     tmpPost.categories = categories;
                 }
                 tmpPost.breadCrumbs = [tmpPost.title + ',' + tmpPost.url.slice(5)];
+                tmpPost.keywords = post.keywords || [];
                 res[index] = tmpPost;
                 index += 1;
             });
