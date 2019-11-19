@@ -14,8 +14,45 @@ hexo.extend.generator.register('programSearch', function (locals) {
 
     let posts;
     let pages;
+    let navs = locals.data.nav;
     // 递归生成搜索结果面包屑
     let resBreadCrumbs = [];
+
+    let navList = {};
+    // 过滤掉不存在侧边栏的文档
+    navs.forEach(function (nav) {
+        if (nav.link) {
+            let navLink = nav.link.trim().replace(/\//g, '');
+            navList[navLink] = nav.text;
+        }
+        nav.nav.forEach(function (nav) {
+            if (nav.link) {
+                let navLink = nav.link.trim().replace(/\//g, '');
+                navList[navLink] = nav.text;
+            }
+            if (nav.sidebar) {
+                getNavList(nav.sidebar);
+            }
+        });
+    });
+
+    function getNavList(sidebar) {
+        if (sidebar.link) {
+            let sidebarLink = sidebar.link.trim().replace(/\//g, '');
+            navList[sidebarLink] = sidebar.text;
+        }
+        sidebar.forEach(item => {
+            if (item.sidebar) {
+                getNavList(item.sidebar);
+            }
+            else {
+                if (item.link) {
+                    let itemLink = item.link.replace(/\//g, '');
+                    navList[itemLink] = item.text;
+                }
+            }
+        });
+    }
 
     if (searchfield.trim() !== '') {
         searchfield = searchfield.trim();
@@ -40,10 +77,10 @@ hexo.extend.generator.register('programSearch', function (locals) {
     [posts, pages].forEach(function (posts) {
         if (posts) {
             posts.each(function (post) {
-                if (post.draft) {
+                let postPath = post.path.trim().replace(/\//g, '');
+                if (post.draft || !navList[postPath]) {
                     return;
                 }
-
                 const tmpPost = {};
                 if (post.title) {
                     tmpPost.title = post.title;
