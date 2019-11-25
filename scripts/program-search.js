@@ -6,14 +6,28 @@
 const fs = require('fs');
 const {BOARD_MAP, TAG_MAP, BOARD_URL_MAP} = require('./utils/constant');
 
+// 处理nav.yml文件的link，标准化，使首尾均有/
+// todo: nav.yml的link格式统一@wenlixiu
+const filterLink = link => {
+    const retStart = link.match('^\/', link);
+    const retEnd = link.match('\/$', link);
+    if (!retStart) {
+        link = `/${link}`;
+    }
+    if (!retEnd) {
+        link = `${link}/`;
+    }
+    return link;
+};
+
 // 获取导航链接，如果导航不存在link，则找其sidebar第一项的链接
 const findLink = navItem => {
     if (navItem.link) {
-        return navItem.link;
+        return filterLink(navItem.link);
     }
     const sidebar = navItem.sidebar;
     if (sidebar && sidebar[0].link) {
-        return sidebar[0].link;
+        return filterLink(sidebar[0].link);
     }
     return findLink(sidebar[0]);
 };
@@ -64,12 +78,14 @@ hexo.extend.generator.register('programSearch', function (locals) {
             return subitem.name && subitem.link;
         });
 
-        item.breadCrumbs.push({name: item.text, link: '/docs' + item.link});
+        const link = findLink(item);
+
+        item.breadCrumbs.push({name: item.text, link: '/docs' + link});
 
         return {
             breadCrumbs: item.breadCrumbs,
             title: item.text,
-            url: '/docs' + item.link,
+            url: '/docs' + link,
             name: item.name
         };
     });
@@ -98,7 +114,8 @@ hexo.extend.generator.register('programSearch', function (locals) {
 
     resBreadCrumbs.forEach(function (item) {
         // const itemUrl = item.url.trim().replace(/^\//g, '').replace(/\/$/g, '');
-        const itemUrl = item.url.trim().replace(/\//g, '');
+        // const itemUrl = item.url.trim().replace(/\//g, '');
+        const itemUrl = filterLink(item.url);
         if (itemUrl.indexOf('#') > 0) {
             return;
         }
@@ -107,8 +124,8 @@ hexo.extend.generator.register('programSearch', function (locals) {
 
     posts = posts.filter(function (post) {
         const postPath = config.root + post.path;
-        const postPathUrl = postPath.trim().replace(/\//g, '');
-        return navList[postPathUrl];
+        // const postPathUrl = postPath.trim().replace(/\//g, '');
+        return navList[postPath];
     });
 
     [posts, pages].forEach(function (posts) {
@@ -144,11 +161,10 @@ hexo.extend.generator.register('programSearch', function (locals) {
                     post.categories.each(setName);
                     tmpPost.categories = categories;
                 }
-                // tmpPost.breadCrumbs = [tmpPost.title + ',' + tmpPost.url.slice(5)];
-                const tmpPostUrl = tmpPost.url.replace(/\//g, '');
                 const tmpPostBreadCrumbs = resBreadCrumbs.filter(function (item) {
-                    const itemUrl = item.url.replace(/\//g, '');
-                    return (itemUrl === tmpPostUrl) && (item.name === post.sidebar);
+                    // 保证该页面的url存在nav.yml文件中 且 name与sidebar对应
+                    // todo: name与sidebar一一对应 @wenlixiu
+                    return (item.url === tmpPost.url) && (item.name === post.sidebar);
                 });
                 if (tmpPostBreadCrumbs.length > 0) {
                     tmpPost.breadCrumbs = tmpPostBreadCrumbs[0].breadCrumbs;
