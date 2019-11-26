@@ -4,7 +4,11 @@
  */
 
 const fs = require('fs');
-const {BOARD_MAP, TAG_MAP, BOARD_URL_MAP} = require('./utils/constant');
+const {
+    BOARD_MAP,
+    TAG_MAP,
+    BOARD_URL_MAP
+} = require('./utils/constant');
 
 // 处理nav.yml文件的link，标准化，使首尾均有/
 // todo: nav.yml的link格式统一@wenlixiu
@@ -17,7 +21,7 @@ const filterLink = link => {
     if (!retEnd) {
         link = `${link}/`;
     }
-    return link;
+    return '/docs' + link;
 };
 
 // 获取导航链接，如果导航不存在link，则找其sidebar第一项的链接
@@ -31,34 +35,38 @@ const findLink = navItem => {
     }
     return findLink(sidebar[0]);
 };
-
 /* global hexo */
 hexo.extend.generator.register('programSearch', function (locals) {
     const config = this.config;
     const searchConfig = config.search;
-    let searchfield = searchConfig.field;
 
-    let posts;
-    let pages;
     let navs = locals.data.nav;
-    // 递归生成搜索结果面包屑
+    // 最终生成的面包屑数据
     let resBreadCrumbs = [];
-    // 将侧边栏数据加入搜索结果 && 过滤掉不存在侧边栏的文档
+    // 递归生成搜索结果面包屑
     navs.forEach(function (nav) {
         nav.nav.forEach(function (nav) {
             generateNavItem(nav);
         });
     });
 
+    // 生成面包屑数据二级导航
     function generateNavItem(navItem) {
         const link = findLink(navItem);
-        navItem.breadCrumbs = [{name: navItem.text, link: '/docs' + link}];
+        navItem.breadCrumbs = [{
+            name: navItem.text,
+            link
+        }];
         resBreadCrumbs.push(navItem);
         if (navItem.sidebar) {
-            generateNav(navItem.sidebar, [{name: navItem.text, link: '/docs' + link}], 0);
+            generateNav(navItem.sidebar, [{
+                name: navItem.text,
+                link
+            }], 0);
         }
     }
 
+    // 生成面包屑数据三级导航
     function generateNav(nav, breadCrumbs, index) {
         index++;
         nav.forEach(function (na) {
@@ -67,66 +75,68 @@ hexo.extend.generator.register('programSearch', function (locals) {
             if (na.sidebar) {
                 const link = findLink(na);
                 const temp = breadCrumbs.slice(0, index);
-                temp.push({name: na.text, link: '/docs' + link});
+                temp.push({
+                    name: na.text,
+                    link
+                });
                 generateNav(na.sidebar, temp, index);
             }
         });
     }
 
+    const navList = {};
+
     resBreadCrumbs = resBreadCrumbs.map(function (item) {
+        //  保证面包屑数据中 text和link均存在
         item.breadCrumbs = item.breadCrumbs.filter(function (subitem) {
             return subitem.name && subitem.link;
         });
 
-        const link = findLink(item);
+        const itemLink = findLink(item);
 
-        item.breadCrumbs.push({name: item.text, link: '/docs' + link});
+        item.breadCrumbs.push({
+            name: item.text,
+            link: itemLink
+        });
+
+        // 去掉链接中包含#号的文档，保存在navList中，去重
+        if (itemLink.indexOf('#') === -1) {
+            navList[itemLink] = itemLink;
+        }
 
         return {
             breadCrumbs: item.breadCrumbs,
             title: item.text,
-            url: '/docs' + link,
+            url: itemLink,
             name: item.name
         };
     });
+    // let index = 0;
 
+    let searchfield = searchConfig.field;
+    let posts;
+    let pages;
     if (searchfield.trim() !== '') {
         searchfield = searchfield.trim();
         if (searchfield === 'post') {
             posts = locals.posts.sort('-date');
-        }
-        else if (searchfield === 'page') {
-            pages = locals.pages;
-        }
-        else {
+        } else if (searchfield === 'page') {
+            posts = locals.pages;
+        } else {
             posts = locals.posts.sort('-date');
             pages = locals.pages;
         }
-    }
-    else {
+    } else {
         posts = locals.posts.sort('-date');
     }
 
-    let res = [];
-    let index = 0;
-
-    const navList = {};
-
-    resBreadCrumbs.forEach(function (item) {
-        // const itemUrl = item.url.trim().replace(/^\//g, '').replace(/\/$/g, '');
-        // const itemUrl = item.url.trim().replace(/\//g, '');
-        const itemUrl = filterLink(item.url);
-        if (itemUrl.indexOf('#') > 0) {
-            return;
-        }
-        navList[itemUrl] = item.title;
-    });
-
+    // 过滤掉不存在侧边栏的文档，保证搜索数据干净
     posts = posts.filter(function (post) {
         const postPath = config.root + post.path;
-        // const postPathUrl = postPath.trim().replace(/\//g, '');
         return navList[postPath];
     });
+
+    let res = [];
 
     [posts, pages].forEach(function (posts) {
         if (posts) {
@@ -136,45 +146,31 @@ hexo.extend.generator.register('programSearch', function (locals) {
                 }
                 const tmpPost = {};
                 tmpPost.title = post.title || '';
-                tmpPost.url = config.root + post.path || '';
+                tmpPost.url = post.path ? (config.root + post.path) : '';
                 tmpPost.tagName = TAG_MAP[post.nav] || '';
                 tmpPost.boardName = BOARD_MAP[post.header] || '';
                 tmpPost.categoryName = post.categoryName || '';
                 if (post._content) {
                     tmpPost.content = post.more ? replaceHtml(post.more) : includeMarkdown(post._content);
                 }
-                if (post.tags && post.tags.length > 0) {
-                    const tags = [];
-                    const tagIndex = 0;
-                    const setName = function (tag) {
-                        tags[tagIndex] = tag.name;
-                    };
-                    post.tags.each(setName);
-                    tmpPost.tags = tags;
-                }
-                if (post.categories && post.categories.length > 0) {
-                    const categories = [];
-                    const catIndex = 0;
-                    const setName = function (cate) {
-                        categories[catIndex] = cate.name;
-                    };
-                    post.categories.each(setName);
-                    tmpPost.categories = categories;
-                }
                 const tmpPostBreadCrumbs = resBreadCrumbs.filter(function (item) {
                     // 保证该页面的url存在nav.yml文件中 且 name与sidebar对应
                     // todo: name与sidebar一一对应 @wenlixiu
                     return (item.url === tmpPost.url) && (item.name === post.sidebar);
                 });
-                if (tmpPostBreadCrumbs.length > 0) {
-                    tmpPost.breadCrumbs = tmpPostBreadCrumbs[0].breadCrumbs;
-                }
-                else {
-                    tmpPost.breadCrumbs = [{name: tmpPost.title, link: tmpPost.url}];
-                }
-                tmpPost.breadCrumbs.unshift({name: BOARD_MAP[post.header], link: BOARD_URL_MAP[post.header]});
-                res[index] = tmpPost;
-                index += 1;
+                // 如果不存在breadCrumbs，则默认将本身链接作为breadCrumbs
+                tmpPost.breadCrumbs = tmpPostBreadCrumbs.length > 0 ? tmpPostBreadCrumbs[0].breadCrumbs : [{
+                    name: tmpPost.title,
+                    link: tmpPost.url
+                }];
+                // 添加该文章对应的BOARD
+                tmpPost.breadCrumbs.unshift({
+                    name: BOARD_MAP[post.header],
+                    link: BOARD_URL_MAP[post.header]
+                });
+                // res[index] = tmpPost;
+                // index += 1;
+                res.push(tmpPost);
             });
         }
     });
@@ -215,11 +211,9 @@ function includeMarkdown(content) {
 
 // 去除所有html标签 转为纯文本
 function replaceHtml(str) {
-    str = str.replace(/(\r\n|\n)/g, '')               // 换行
-    .replace(/\s/g, '')                              // 空格
-    .replace(/<!--.*?\/-->/g, '')                   // 注释
-    .replace(/<pre.*?\/pre>/g, '')                 // 去掉代码片段
-    .replace(/<[^>]+>/g, '');                     // html标签
+    str = str.replace(/<!--.*?\/-->/g, '') // 注释
+        .replace(/<pre.*?\/pre>/g, '') // 去掉代码片段
+        .replace(/<[^>]+>/g, ''); // html标签
 
     return str;
 }
