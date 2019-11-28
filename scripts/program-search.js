@@ -147,9 +147,8 @@ hexo.extend.generator.register('programSearch', function (locals) {
                 const tmpPost = {};
                 tmpPost.title = post.title || '';
                 tmpPost.url = post.path ? (config.root + post.path) : '';
-                tmpPost.tagName = TAG_MAP[post.nav] || '';
                 tmpPost.boardName = BOARD_MAP[post.header] || '';
-                tmpPost.categoryName = post.categoryName || '';
+                // tmpPost.categoryName = post.categoryName || '';
                 if (post._content) {
                     tmpPost.content = post.more ? replaceHtml(post.more) : includeMarkdown(post._content);
                 }
@@ -168,8 +167,8 @@ hexo.extend.generator.register('programSearch', function (locals) {
                     name: BOARD_MAP[post.header],
                     link: BOARD_URL_MAP[post.header]
                 });
-                // res[index] = tmpPost;
-                // index += 1;
+                tmpPost.tagName = TAG_MAP[post.nav]
+                                || (tmpPost.breadCrumbs[1].name || tmpPost.boardName);
                 res.push(tmpPost);
             });
         }

@@ -16,7 +16,7 @@ const BOARD_MAP = {
 // 文档tagName
 const TAG_MAP = {
     // 介绍
-    'book': '',
+    // 'book': '',
     // 设计
     'component': '常用组件',
     'foundation': '设计规范',
@@ -25,7 +25,7 @@ const TAG_MAP = {
     'resource': '设计资源',
     'story': '设计故事',
     // 开发
-    'api': 'api',
+    'api': 'API',
     'appendix': '附录',
     'cloud': '云开发',
     'component': '组件',
